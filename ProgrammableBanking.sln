@@ -6,6 +6,9 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Console", "Console\Console.csproj", "{8C3D86DD-57E6-4A0C-921C-908BAFDF2D74}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{D74507B0-F3F3-43F7-A492-A9669CCBF6F9}"
+	ProjectSection(SolutionItems) = preProject
+		config.json = config.json
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dependencies", "Dependencies\Dependencies.csproj", "{6954A617-C964-4AD7-BBDC-13B8B7897280}"
 EndProject
