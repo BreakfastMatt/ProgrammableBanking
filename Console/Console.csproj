@@ -19,6 +19,9 @@
   </PropertyGroup>
 
   <!-- Ensures the config.json file gets redirected on build -->
+  <ItemGroup>
+    <AdditionalFiles Include="..\config.json" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
 
   <!-- Project dependencies -->
   <ItemGroup>
