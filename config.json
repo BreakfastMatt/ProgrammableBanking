@@ -1,4 +1,4 @@
 {
-  ClientId: "add_client_id_api_key",
-  ClientSecret: "add_client_secret"
+  "ClientId": "add_client_id_api_key",
+  "ClientSecret": "add_client_secret"
 }
