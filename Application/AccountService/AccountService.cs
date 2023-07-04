@@ -28,14 +28,37 @@ public class AccountService : IAccountService
     var responseContent = await response.Content.ReadAsStringAsync();
     var deserialisedResponse = jsonSerialiser.DeserializeObject<GetAccountList>(responseContent);
     var accountIds = deserialisedResponse.Data.Accounts
-      .Select(accountData => new AccountIdentity{AccountId = accountData?.AccountId, ProductName = accountData?.ProductName})
+      .Select(accountData => new AccountIdentity { AccountId = accountData?.AccountId, ProductName = accountData?.ProductName })
       .Where(accountIdentity => string.IsNullOrEmpty(accountIdentity.AccountId) == false)
       .ToList();
     return accountIds;
   }
 
-  public Task<List<AccountBalance>> GetAccountBalancesAsync(List<AccountIdentity> accountIds, string accessToken, string uriBase = "https://openapi.investec.com")
+  public async Task<List<AccountBalance>> GetAccountBalancesAsync(List<AccountIdentity> accountIds, string accessToken, string uriBase = "https://openapi.investec.com")
   {
-    throw new NotImplementedException();
+    // Make the API calls
+    var client = new HttpClient();
+    var getAccountIdsTasks = accountIds.Select(accountIdentity =>
+    {
+      // Set up the request
+      var accountId = accountIdentity.AccountId;
+      var url = $"{uriBase}/za/pb/v1/accounts/{accountId}/balance";
+      var request = new HttpRequestMessage(HttpMethod.Get, url);
+      request.Headers.Add("Accept", "application/json");
+      request.Headers.Add("Authorization", $"Bearer {accessToken}");
+      return client.SendAsync(request);
+    });
+    var responseList = await Task.WhenAll(getAccountIdsTasks.ToList());
+
+    // Extract the responses
+    var responseContentList = await Task.WhenAll(responseList.Select(response => response.Content.ReadAsStringAsync()).ToList());
+    var deserialisedResponseList = responseContentList
+      .Select(responseContent => jsonSerialiser.DeserializeObject<GetAccountBalances>(responseContent))
+      .ToList();
+    var accountBalances = deserialisedResponseList
+      .Select(deserialisedResponse => new AccountBalance { AccountId = deserialisedResponse?.Data?.AccountId, CurrentBalance = deserialisedResponse?.Data?.CurrentBalance ?? 0m })
+      .Where(accountBalance => string.IsNullOrEmpty(accountBalance?.AccountId) == false)
+      .ToList();
+    return accountBalances;
   }
 }

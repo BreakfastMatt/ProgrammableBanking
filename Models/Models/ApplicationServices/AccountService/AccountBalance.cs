@@ -5,5 +5,6 @@
 /// </summary>
 public class AccountBalance
 {
-  public AccountIdentity AccountIdentity { get; set; }
+  public string AccountId { get; set; }
+  public decimal CurrentBalance { get; set; }
 }

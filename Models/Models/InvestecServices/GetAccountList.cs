@@ -1,7 +1,7 @@
 ﻿namespace Models.Models.InvestecServices;
 
 /// <summary>
-/// The generated response model from the Investec API for the GetAccountList call
+/// The generated response model for the GetAccountList Investec API call.
 /// </summary>
 public class GetAccountList : InvestecResponseType<AccountListData>
 {
