@@ -1,7 +1,7 @@
 ﻿using System.Text;
 using Models.Interfaces.ApplicationServices.AuthenticationService;
 using Models.Interfaces.DomainServices.JsonSerialiser;
-using Models.Models.AuthenticationService;
+using Models.Models.ApplicationServices.AuthenticationService;
 
 namespace Application.AuthenticationService;
 

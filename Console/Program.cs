@@ -1,7 +1,9 @@
-﻿using Application.AuthenticationService;
+﻿using Application.AccountService;
+using Application.AuthenticationService;
 using Domain.JsonSerialiser;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Models.Interfaces.ApplicationServices.AccountService;
 using Models.Interfaces.ApplicationServices.AuthenticationService;
 using Models.Interfaces.DomainServices.JsonSerialiser;
 
@@ -26,6 +28,7 @@ public class Program
 
         // Register Application Services
         services.AddScoped<IAuthenticationService, AuthenticationService>();
+        services.AddScoped<IAccountService, AccountService>();
       })
       .Build();
 
