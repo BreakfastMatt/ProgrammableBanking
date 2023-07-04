@@ -47,8 +47,54 @@ public class TransactionService : ITransactionService
         TransactionType = transaction?.TransactionType ?? string.Empty,
         RunningBalance = transaction?.RunningBalance ?? 0m,
       }))
-      .Where(accountTransaction => string.IsNullOrEmpty(accountTransaction?.Description) == false)
+      .Where(accountTransaction => string.IsNullOrEmpty(accountTransaction?.Description) == false && accountTransaction.TransactionDate >= fromDate)
+      .OrderBy(accountTransaction => accountTransaction.TransactionDate)
       .ToList();
     return accountTransactions;
+  }
+
+  public AccountTransactionCategories GetTransactionCategories(string fileName = "config.json")
+  {
+    // Read in the contents from the config.json file
+    string basePath = AppContext.BaseDirectory;
+    var configFilePath = Path.Combine(basePath, fileName);
+    var configJson = File.ReadAllText(configFilePath) ?? string.Empty;
+
+    // Deserialise the JSON to an object
+    var deserialisedObject = jsonSerialiser.DeserializeObject<AccountTransactionCategories>(configJson) ?? new AccountTransactionCategories();
+    return deserialisedObject;
+  }
+
+  public Dictionary<string, decimal> GroupAccountTransactions(List<AccountTransactions> accountTransactions, Dictionary<string, List<string>> transactionCategories)
+  {
+    var transactionGroups = new Dictionary<string, decimal>();
+    foreach (var category in transactionCategories)
+    {
+      // Transaction category details
+      var categoryName = category.Key;
+      var categoryTransactionsFilter = category.Value;
+
+      // Get the total value for the category
+      var categoryTotal = accountTransactions
+        .Where(transaction => categoryTransactionsFilter.Any(categoryDescription => transaction.Description.Contains(categoryDescription)))
+        .Sum(categoryTransaction => categoryTransaction.IsCredit ? categoryTransaction.Amount : (0 - categoryTransaction.Amount));
+      transactionGroups.Add(categoryName, categoryTotal);
+
+      // Remove all categorised transactions
+      accountTransactions.RemoveAll(transaction => categoryTransactionsFilter.Any(categoryDescription => transaction.Description.Contains(categoryDescription)));
+    }
+
+    // Add the uncategorised items
+    var miscTotal = accountTransactions.Sum(transaction => transaction.IsCredit ? transaction.Amount : (0 - transaction.Amount));
+    transactionGroups.Add("Misc", miscTotal);
+
+    // Logging details (unused for now)
+    var miscDescriptions = accountTransactions.Select(uncategorisedTransaction => new { Description = uncategorisedTransaction.Description, Amount = uncategorisedTransaction.Amount }).ToList();
+    var openingBalance = transactionGroups.FirstOrDefault(transactionGroup => transactionGroup.Key == "Income").Value;
+    var expenses = transactionGroups.Sum(category => category.Value < 0 ? Math.Abs(category.Value) : 0);
+    var closingBalance = transactionGroups.Sum(category => category.Value); // Surplus or Defecit
+
+    // Return the transactions
+    return transactionGroups;
   }
 }

@@ -1,5 +1,16 @@
 {
   "ApiKey": "add_api_key",
   "ClientId": "add_client_id_api_key",
-  "ClientSecret": "add_client_secret"
+  "ClientSecret": "add_client_secret",
+  "AccountTransactions": {
+    "Income": [ "required" ],
+    "Rent": [ "add_list_of_descriptions_here" ],
+    "Utilities": [ "add_list_of_descriptions_here" ],
+    "Groceries": [ "add_list_of_descriptions_here" ],
+    "Bank Fees": [ "add_list_of_descriptions_here" ],
+    "Insurance": [ "add_list_of_descriptions_here" ],
+    "Health": [ "add_list_of_descriptions_here" ],
+    "Fuel": [ "add_list_of_descriptions_here" ],
+    "Travel": [ "add_list_of_descriptions_here" ]
+  }
 }
