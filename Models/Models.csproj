@@ -6,4 +6,13 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Folder Include="Constants\" />
+    <Folder Include="Models\DomainServices\JsonSerialiser\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Dependencies\Dependencies.csproj" />
+  </ItemGroup>
+
 </Project>

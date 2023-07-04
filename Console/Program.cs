@@ -1,4 +1,9 @@
-﻿using Microsoft.Extensions.Hosting;
+﻿using Application.AuthenticationService;
+using Domain.JsonSerialiser;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using Models.Interfaces.ApplicationServices.AuthenticationService;
+using Models.Interfaces.DomainServices.JsonSerialiser;
 
 namespace ConsoleApp;
 
@@ -17,15 +22,15 @@ public class Program
       .ConfigureServices(services =>
       {
         // Register Domain Services
-        // TODO:
+        services.AddSingleton<IJsonSerialiser, JsonSerialiser>();
 
         // Register Application Services
-        // TODO:
+        services.AddScoped<IAuthenticationService, AuthenticationService>();
       })
       .Build();
 
     // Call the delegator service
-    // TODO: add service here (var service = host.Services.GetRequiredService<IService>())
-    // TODO: use service
+    //var service = host.Services.GetRequiredService<IAuthenticationService>();
+    //var response = service.TestAccessToken();
   }
 }
