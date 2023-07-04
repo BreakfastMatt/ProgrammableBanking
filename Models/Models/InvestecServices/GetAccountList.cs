@@ -1,16 +1,13 @@
-﻿namespace Models.ApplicationServices.AccountService;
+﻿namespace Models.Models.InvestecServices;
 
 /// <summary>
-/// The generated response model from the Investec API
+/// The generated response model from the Investec API for the GetAccountList call
 /// </summary>
-public class GetAccountList
+public class GetAccountList : InvestecResponseType<AccountListData>
 {
-  public AccountData Data { get; set; }
-  public Links Links { get; set; }
-  public Meta Meta { get; set; }
 }
 
-public class AccountData
+public class AccountListData
 {
   public List<AccountType> Accounts { get; set; }
 }
@@ -25,14 +22,4 @@ public class AccountType
   public bool KycCompliant { get; set; }
   public long ProfileId { get; set; }
   public string ProfileName { get; set; }
-}
-
-public class Links
-{
-  public string Self { get; set; }
-}
-
-public class Meta
-{
-  public int TotalPages { get; set; }
 }

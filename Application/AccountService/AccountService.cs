@@ -1,7 +1,7 @@
-﻿using Models.ApplicationServices.AccountService;
-using Models.Interfaces.ApplicationServices.AccountService;
+﻿using Models.Interfaces.ApplicationServices.AccountService;
 using Models.Interfaces.DomainServices.JsonSerialiser;
 using Models.Models.ApplicationServices.AccountService;
+using Models.Models.InvestecServices;
 
 namespace Application.AccountService;
 
@@ -32,5 +32,10 @@ public class AccountService : IAccountService
       .Where(accountIdentity => string.IsNullOrEmpty(accountIdentity.AccountId) == false)
       .ToList();
     return accountIds;
+  }
+
+  public Task<List<AccountBalance>> GetAccountBalancesAsync(List<AccountIdentity> accountIds, string accessToken, string uriBase = "https://openapi.investec.com")
+  {
+    throw new NotImplementedException();
   }
 }
